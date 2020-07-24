@@ -1,0 +1,279 @@
+version: "2.4"
+services:
+  bootnode:
+    hostname: bootnode
+    build:
+      context: ./bootnode
+    ports:
+      - 30301:30301/udp
+    networks:
+      network:
+        ipv4_address: ${BOOTNODE_IP}
+
+  miner-1:
+    hostname: miner-1
+    depends_on:
+      - bootnode
+    environment:
+      - BOOTNODE_IP=${BOOTNODE_IP}
+      - NETWORK_ID=${NETWORK_ID}
+      - N_CPU=${N_CPU}
+      - MEMCACHE_MB=${MEMCACHE_MB}
+      - PPROF_PORT=6060
+    build:
+      context: ./miner
+      args:
+        MINER_ID: 1
+    container_name: miner-1
+    volumes:
+      - data-miner-1:/root/.ethash
+    networks:
+      network:
+        ipv4_address: 192.0.0.101
+    ports:
+      - 30303:30303
+    cpus: ${N_CPU}
+    mem_limit: ${MEMORY}
+
+  miner-2:
+    hostname: miner-2
+    depends_on:
+      - bootnode
+    environment:
+      - BOOTNODE_IP=${BOOTNODE_IP}
+      - NETWORK_ID=${NETWORK_ID}
+      - N_CPU=${N_CPU}
+      - MEMCACHE_MB=${MEMCACHE_MB}
+      - PPROF_PORT=6061
+    build:
+      context: ./miner
+      args:
+        MINER_ID: 2
+    container_name: miner-2
+    volumes:
+     - data-miner-2:/root/.ethash
+    networks:
+      network:
+        ipv4_address: 192.0.0.102
+    cpus: ${N_CPU}
+    mem_limit: ${MEMORY}
+
+  miner-3:
+    hostname: miner-3
+    depends_on:
+      - bootnode
+    environment:
+      - BOOTNODE_IP=${BOOTNODE_IP}
+      - NETWORK_ID=${NETWORK_ID}
+      - N_CPU=${N_CPU}
+      - MEMCACHE_MB=${MEMCACHE_MB}
+      - PPROF_PORT=6062
+    build:
+      context: ./miner
+      args:
+        MINER_ID: 3
+    container_name: miner-3
+    volumes:
+     - data-miner-3:/root/.ethash
+    networks:
+      network:
+        ipv4_address: 192.0.0.103
+    cpus: ${N_CPU}
+    mem_limit: ${MEMORY}
+
+  # miner-4:
+    # hostname: miner-4
+    # depends_on:
+      # - bootnode
+    # environment:
+      # - BOOTNODE_IP=${BOOTNODE_IP}
+      # - NETWORK_ID=${NETWORK_ID}
+      # - N_CPU=${N_CPU}
+      # - MEMCACHE_MB=${MEMCACHE_MB}
+      # - PPROF_PORT=6063
+    # build:
+      # context: ./miner
+      # args:
+        # MINER_ID: 4
+    # container_name: miner-4
+    # volumes:
+     # - data-miner-4:/root/.ethash
+    # networks:
+      # network:
+        # ipv4_address: 192.0.0.104
+    # cpus: ${N_CPU}
+    # mem_limit: ${MEMORY}
+
+  # miner-5:
+    # hostname: miner-5
+    # depends_on:
+      # - bootnode
+    # environment:
+      # - BOOTNODE_IP=${BOOTNODE_IP}
+      # - NETWORK_ID=${NETWORK_ID}
+      # - N_CPU=${N_CPU}
+      # - MEMCACHE_MB=${MEMCACHE_MB}
+      # - PPROF_PORT=6064
+    # build:
+      # context: ./miner
+      # args:
+        # MINER_ID: 5
+    # container_name: miner-5
+    # volumes:
+     # - data-miner-5:/root/.ethash
+    # networks:
+      # network:
+        # ipv4_address: 192.0.0.105
+    # cpus: ${N_CPU}
+    # mem_limit: ${MEMORY}
+
+  # miner-6:
+    # hostname: miner-6
+    # depends_on:
+      # - bootnode
+    # environment:
+      # - BOOTNODE_IP=${BOOTNODE_IP}
+      # - NETWORK_ID=${NETWORK_ID}
+      # - N_CPU=${N_CPU}
+      # - MEMCACHE_MB=${MEMCACHE_MB}
+      # - PPROF_PORT=6065
+    # build:
+      # context: ./miner
+      # args:
+        # MINER_ID: 6
+    # container_name: miner-6
+    # volumes:
+     # - data-miner-6:/root/.ethash
+    # networks:
+      # network:
+        # ipv4_address: 192.0.0.106
+    # cpus: ${N_CPU}
+    # mem_limit: ${MEMORY}
+
+  # miner-7:
+    # hostname: miner-7
+    # depends_on:
+      # - bootnode
+    # environment:
+      # - BOOTNODE_IP=${BOOTNODE_IP}
+      # - NETWORK_ID=${NETWORK_ID}
+      # - N_CPU=${N_CPU}
+      # - MEMCACHE_MB=${MEMCACHE_MB}
+      # - PPROF_PORT=6066
+    # build:
+      # context: ./miner
+      # args:
+        # MINER_ID: 7
+    # container_name: miner-7
+    # volumes:
+     # - data-miner-7:/root/.ethash
+    # networks:
+      # network:
+        # ipv4_address: 192.0.0.107
+    # cpus: ${N_CPU}
+    # mem_limit: ${MEMORY}
+
+  # miner-8:
+    # hostname: miner-8
+    # depends_on:
+      # - bootnode
+    # environment:
+      # - BOOTNODE_IP=${BOOTNODE_IP}
+      # - NETWORK_ID=${NETWORK_ID}
+      # - N_CPU=${N_CPU}
+      # - MEMCACHE_MB=${MEMCACHE_MB}
+      # - PPROF_PORT=6067
+    # build:
+      # context: ./miner
+      # args:
+        # MINER_ID: 8
+    # container_name: miner-8
+    # volumes:
+     # - data-miner-8:/root/.ethash
+    # networks:
+      # network:
+        # ipv4_address: 192.0.0.108
+    # cpus: ${N_CPU}
+    # mem_limit: ${MEMORY}
+
+  # sender-1:
+    # hostname: sender-1
+    # depends_on:
+      # - miner-1
+    # environment:
+      # - BOOTNODE_IP=${BOOTNODE_IP}
+      # - NETWORK_ID=${NETWORK_ID}
+      # - NETWORK_IP=${NETWORK_IP}
+    # build:
+      # context: ./tools
+    # container_name: sender-1
+    # volumes:
+     # - data-sender-1:/root/.ethash
+    # networks:
+      # network:
+        # ipv4_address: 192.0.0.10
+
+  # node:
+    # hostname: node
+    # depends_on:
+      # - miner-1
+    # environment: 
+      # - BOOTNODE_IP=${BOOTNODE_IP}
+      # - NETWORK_ID=${NETWORK_ID}
+      # - NETWORK_IP=${NETWORK_IP}
+    # build:
+      # context: ./node
+    # container_name: node
+    # volumes:
+     # - data-node:/root/.ethash
+    # networks:
+      # network:
+        # ipv4_address: 192.0.0.11
+
+  # ethstats-server:
+    # hostname: ethstats-server
+    # depends_on:
+      # - miner-1
+    # environment:
+      # - WS_SECRET=foo
+    # build:
+      # context: ./ethstats-server
+    # container_name: ethstats-server
+    # networks:
+      # network:
+        # ipv4_address: 192.0.0.12
+    # ports:
+      # - 8080:3000
+
+  # ethstats-client:
+    # hostname: ethstats-client
+    # depends_on:
+      # - ethstats-server
+    # build:
+      # context: ./ethstats-client
+    # container_name: ethstats-client
+    # volumes:
+      # - data-ethstats-client:/root/.ethash
+    # networks:
+      # network:
+        # ipv4_address: 192.0.0.13
+
+networks:
+  network:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 192.0.0.0/24
+
+volumes:
+  data-miner-1:
+  data-miner-2:
+  data-miner-3:
+  # data-miner-4:
+  # data-miner-5:
+  # data-miner-6:
+  # data-miner-7:
+  # data-miner-8:
+  # data-sender-1:
+  # data-ethstats-client:
+  # data-node:

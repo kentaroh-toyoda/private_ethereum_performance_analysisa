@@ -1,0 +1,19 @@
+version: "2.4"
+services:
+  sender-1:
+    hostname: sender-1
+    environment:
+      - BOOTNODE_IP=${BOOTNODE_IP}
+      - NETWORK_ID=${NETWORK_ID}
+    build:
+      context: ./tools
+    container_name: sender-1
+    volumes:
+      - data-sender-1:/root/.ethash
+    ports:
+      - 30303:30303
+    cpus: 16
+    mem_limit: 32g
+
+volumes:
+  data-sender-1:
